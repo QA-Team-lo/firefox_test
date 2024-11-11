@@ -1,0 +1,2 @@
+wpt_out_fedora.html filter=lfs diff=lfs merge=lfs -text
+wpt_out_openkylin.html filter=lfs diff=lfs merge=lfs -text
