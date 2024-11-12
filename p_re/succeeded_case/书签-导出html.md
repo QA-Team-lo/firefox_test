@@ -21,5 +21,3 @@
 ![alt text](image-67.png)
 
 导出 html 成功。
-
-![alt text](image-68.png)

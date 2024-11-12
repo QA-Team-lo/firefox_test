@@ -20,12 +20,9 @@
 
 点击打印
 
-![alt text](image-24.png)
-
 保存
 
 ![alt text](image-25.png)
 
 保存成功
 
-![alt text](image-26.png)

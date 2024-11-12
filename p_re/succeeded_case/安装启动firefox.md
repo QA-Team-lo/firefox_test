@@ -18,4 +18,3 @@ firefox 安装启动成功。
 无。
 
 ![alt text](image-115.png)
-![alt text](image-116.png)
