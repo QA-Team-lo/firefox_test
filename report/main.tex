@@ -10,9 +10,11 @@
 
 %%------------------摘要-------------%%
 \begin{abstract}
-目前，实时操作系统 RT-Thread 及其衍生 RT-Smart 对 RISC-V 架构的支持已经逐渐完善。
-为了说明当前 RT-Thread 和 RT-Smart 对 RISC-V 架构的支持情况，本报告对 Milk-V Duo/Duo 256M/Duo S 三款开发板进行了验证及测试。
-内容包含 RT-Thread 和 RT-Smart 当前对三款开发板支持情况的说明，开发环境的搭建方式，以及对三款开发板的性能测试结果。
+报告测试了 Firefox 在 RISC-V 平台，特别是在 Milk-V Pioneer Box 和 Sipeed LicheePi 4A 上的可用性测试。
+测试涵盖了多个 Linux 发行版和 Firefox 版本，通过手动和自动测试评估其在 RISC-V 平台上的可用性。
+手动测试验证了日常使用场景，自动测试利用 web-platform-tests 对 Firefox 进行了全面的兼容性检验。
+结果显示，Firefox 能够在 RISC-V 设备上运行，但由于硬件和软件原因表现受限，存在无法使用硬件解码播放视频等问题。
+总体而言，虽然 Firefox 在 RISC-V 平台上已经基本可用，但仍需进一步优化和支持。
 \end{abstract}
 
 \thispagestyle{empty} % 首页不显示页码
@@ -270,7 +272,7 @@ sudo apt-get install python3 python3-pip python3-venv python-is-python3
 ```shell!
 ./wpt --venv /home/openkylin/venv_wpt/ run --log-raw wpt_out.txt --log-html wpt_out.html --log-mach wpt_out_readable.txt --log-wptreport wpt_out_report.txt firefox -f --process 16
 ```
-其中问道是否安装 geckodriver 时，请选择否（官方无 RISC-V 版本。PLCT 疑似有移植，见 [仓库](https://github.com/plctlab/gecko-dev-riscv)，但是安装不完全影响测试。
+其中问到是否安装 geckodriver 时，请选择否（官方无 RISC-V 版本。PLCT 疑似有移植，见 [仓库](https://github.com/plctlab/gecko-dev-riscv)，但是安装不完全影响测试。
 
 ### 性能测试
 
