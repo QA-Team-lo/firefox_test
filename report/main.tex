@@ -272,7 +272,7 @@ sudo apt-get install python3 python3-pip python3-venv python-is-python3
 ```shell!
 ./wpt --venv /home/openkylin/venv_wpt/ run --log-raw wpt_out.txt --log-html wpt_out.html --log-mach wpt_out_readable.txt --log-wptreport wpt_out_report.txt firefox -f --process 16
 ```
-当提示是否安装 geckodriver 时，请选择否（官方无 RISC-V 版本；PLCT 疑似有移植，见 [仓库](https://github.com/plctlab/gecko-dev-riscv)，但安装不完全影响测试。
+当提示是否安装 geckodriver 时，请选择否（官方无 RISC-V 版本），否则其会下载其它架构版本影响测试。
 
 ### 性能测试
 
