@@ -10,7 +10,7 @@
 
 %%------------------摘要-------------%%
 \begin{abstract}
-报告进行了 Firefox 在 RISC-V 平台，特别是在 Milk-V Pioneer Box 和 Sipeed LicheePi 4A 上的可用性测试。
+本次测试报告皆在验证 Firefox 在 RISC-V 平台上的可用性，进行了 Firefox 在 Milk-V Pioneer Box 和 Sipeed LicheePi 4A 两个 RISC-V 典型平台上的测试。
 测试涵盖了多个 Linux 发行版和 Firefox 版本，通过手动和自动测试评估其在 RISC-V 平台上的可用性。
 手动测试验证了日常使用场景，自动测试利用 web-platform-tests 对 Firefox 进行了全面的兼容性检验。
 结果显示，Firefox 能够在测试涉及的 RISC-V 设备上运行，但由于硬件性能和软件优化受限，存在无法使用硬件解码播放视频等问题。
@@ -29,9 +29,12 @@
 \begin{markdown}
 
 # 简介
-由于
+
 ## 软件说明
 Firefox 是一个免费和开源的浏览器，全世界 10% 的人使用 Firefox 作为他们的主要浏览器。Mozilla 是 Firefox 浏览器的开发商，主要提供专注于开放网络的产品。Firefox 是谷歌 Chrome 浏览器的替代品。
+
+## 测试目的
+本次测试皆在验证 Firefox 在 RISC-V 平台上的可用性，特别是在 Milk-V Pioneer Box 和 Sipeed LicheePi 4A 两个典型平台上的表现。通过手动和自动测试的方法，评估了 Firefox 当前在 RISC-V 平台上的可用性，对目前的平台兼容性，及用户的日常使用体验，给出了定性和定量的结论，并为其未来进一步的优化和支持提供参考。
 
 ## 测试概述
 本次测试在 RISC-V 设备 Milk-V Pioneer Box 和 Sipeed LicheePi 4A 的多个 Linux 发行版上对多个版本的 Firefox 进行了手动或自动的测试，对其目前在 RISC-V 上的可用性进行了较为全面的测试并得出了相应的结论。
@@ -40,6 +43,45 @@ Firefox 是一个免费和开源的浏览器，全世界 10% 的人使用 Firefo
 在部分系统下还使用了 Speedometer3 和 Basemark 来测试浏览器浏览网页以及图形性能。
 
 手动测试采用贴近真实用户日常使用场景的测试用例，模拟一般用户的操作方式对 Firefox 在测试环境上的日常浏览体验进行了评估。
+
+## 测试总结
+本次测试在以下平台和系统上验证情况如下：
+
+| 平台 | 发行版 | 测试结果 |
+| --- | --- | --- |
+| Pioneer Box | Fedora 38 | 可用 |
+| LicheePi 4A | Fedora | 当前无网卡支持 |
+| Pioneer Box | openKylin 2.0 | 可用 |
+| LicheePi 4A | openKylin 2.0 | 可用 |
+| Pioneer Box | RevyOS | 可用 |
+| LicheePi 4A | RevyOS | 可用 |
+| Any | openEuler | 无 GUI 版本 |
+| Any | openCloudOS | 未找到可用版本 |
+| Any | Ubuntu | 未找到可用版本 |
+| Any | Debian/RuyiOS | 使用 Debian 替代 | 
+
+自动测试框架 web-platform-test 给出了当前 Nightly 版本 Firefox 在多个发行版上的兼容性测试结果：
+
+| 发行版 | 通过数 | 跳过数 | 预期失败 | 预期错误数 | 失败数 | 错误数 | 预期无法通过数 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Fedora | 21487 | 216 | 3409 | 56 | 216 | 183 | 31 |
+| openKylin | 19663 | 479 | 3414 | 62 | 2036 | 142 | 32 |
+
+部分测试为字体渲染、排版等细微差异，不对兼容性造成影响。剩余错误一般由外设交互造成，如 webgpu、webnn、webnfc 等，日常浏览网页不受影响。
+
+性能测试结果如下：
+
+- Speedometer 3：
+
+| Pioneer Box | LicheePi 4A | x86-64 参考 |
+| --- | --- | --- |
+| 0.747 | 0.3249 | 1020 |
+
+- Basemark：
+
+| Pioneer Box | LicheePi 4A | x86-64 参考 |
+| --- | --- | --- |
+| 39.02 | 不兼容 | 2000 |
 
 # 环境说明
 
@@ -288,7 +330,7 @@ sudo apt-get install python3 python3-pip python3-venv python-is-python3
 
 ## 手动测试
 
-手动测试中，我们模拟用户日常使用习惯精选了 72 个测试用例进行测试，涵盖了浏览网页、下载、书签、打印、设置、历史等常见操作，并以此基础进行了实际使用体验和步骤截图。
+手动测试中，通过模拟用户日常使用习惯，精选了 72 个测试用例进行测试，其涵盖了浏览网页、下载、书签、打印、设置、历史等常见操作，并以此基础进行了实际使用体验和步骤截图。
 
 ## web-platform-tests 自动测试
 
@@ -298,7 +340,7 @@ web-platform-tests（wpt）自动测试套件是一个跨浏览器的 Web 平台
 
 wpt 官方维护着一个 x86 架构的测试 [看板](https://wpt.fyi/results/?label=master&label=experimental&aligned)，可以在上面找到单 wpt 的最新结果。
 
-由于版权和证书问题，Firefox 自带的 wpt 套件中还包含了其自己转为 wpt 编写的专有用例，以`_mozilla`的路径显示，因此 Firefox 自身的报告测试数量会高于 wpt 官方测试的数目，为正常情况。
+由于版权和证书问题，Firefox 自带的 wpt 套件中还包含了其自己专为 wpt 编写的专有用例，以`_mozilla`的路径显示，因此 Firefox 自身的报告测试数量会高于 wpt 官方测试的数目，为正常情况。
 
 ## 性能测试
 
@@ -339,7 +381,7 @@ Basemark Web 3.0 是一个全面的 Web 浏览器性能基准测试，可测试�
 
 除上述 Fedora 上出现的问题外，openKylin 上在 HTML Canvas、DOM 绘制、渲染方面也出现了一些问题。这可能与系统外设驱动、渲染驱动不同，或字体渲染错误等原因造成。
 
-根据测试截图，差异一般较为细微，如绘图偏移、加粗、字体排版差异等，我们认为一般不影响日常使用。
+根据测试截图，差异一般较为细微，如绘图偏移、加粗、字体排版差异等，一般被认为不影响日常使用。
 
 ## 性能测试
 
@@ -361,7 +403,7 @@ Pioneer Box 的 Basemark Web 测试兼容性数据：
 
 # 总结
 
-综上所述，我们针对 Firefox 在 RISC-V 平台上的可用性进行了多项手动和自动测试。截止到 2024 年 11 月，Firefox 在 Milk-V Pioneer Box 和 Sipeed Lichee Pi 4A 上运行较为良好。受限于 SG2042 和 TH1520 的单核性能，并不能做到非常流畅的运行。也有诸如无法使用硬件解码播放视频等问题。Firefox 在 RISC-V 平台上的支持仍然任重而道远。
+综上所述，针对 Firefox 在 RISC-V 平台上的可用性进行了多项手动和自动测试。截止到 2024 年 11 月，Firefox 在 Milk-V Pioneer Box 和 Sipeed Lichee Pi 4A 上运行较为良好。受限于 SG2042 和 TH1520 的单核性能，并不能做到非常流畅的运行。也有诸如无法使用硬件解码播放视频等问题。Firefox 在 RISC-V 平台上的支持仍然任重而道远。
 
 
 \end{markdown}
