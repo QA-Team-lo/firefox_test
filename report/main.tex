@@ -10,11 +10,11 @@
 
 %%------------------摘要-------------%%
 \begin{abstract}
-报告测试了 Firefox 在 RISC-V 平台，特别是在 Milk-V Pioneer Box 和 Sipeed LicheePi 4A 上的可用性测试。
+报告进行了 Firefox 在 RISC-V 平台，特别是在 Milk-V Pioneer Box 和 Sipeed LicheePi 4A 上的可用性测试。
 测试涵盖了多个 Linux 发行版和 Firefox 版本，通过手动和自动测试评估其在 RISC-V 平台上的可用性。
 手动测试验证了日常使用场景，自动测试利用 web-platform-tests 对 Firefox 进行了全面的兼容性检验。
-结果显示，Firefox 能够在 RISC-V 设备上运行，但由于硬件和软件原因表现受限，存在无法使用硬件解码播放视频等问题。
-总体而言，虽然 Firefox 在 RISC-V 平台上已经基本可用，但仍需进一步优化和支持。
+结果显示，Firefox 能够在测试涉及的 RISC-V 设备上运行，但由于硬件性能和软件优化受限，存在无法使用硬件解码播放视频等问题。
+总体而言，Firefox 在 RISC-V 平台上已经基本可用，但仍需进一步优化和支持。
 \end{abstract}
 
 \thispagestyle{empty} % 首页不显示页码
@@ -29,7 +29,7 @@
 \begin{markdown}
 
 # 简介
-
+由于
 ## 软件说明
 Firefox 是一个免费和开源的浏览器，全世界 10% 的人使用 Firefox 作为他们的主要浏览器。Mozilla 是 Firefox 浏览器的开发商，主要提供专注于开放网络的产品。Firefox 是谷歌 Chrome 浏览器的替代品。
 
@@ -37,9 +37,9 @@ Firefox 是一个免费和开源的浏览器，全世界 10% 的人使用 Firefo
 本次测试在 RISC-V 设备 Milk-V Pioneer Box 和 Sipeed LicheePi 4A 的多个 Linux 发行版上对多个版本的 Firefox 进行了手动或自动的测试，对其目前在 RISC-V 上的可用性进行了较为全面的测试并得出了相应的结论。
 
 测试过程中采用了大量使用的 web-platform-test 测试框架在部分发行版上对浏览器进行了测试，对其进行了较为全面且完整的验证。
-在部分系统下还使用了 speedometer3，basemark 来测试浏览器浏览网页以及图形性能。
+在部分系统下还使用了 Speedometer3 和 Basemark 来测试浏览器浏览网页以及图形性能。
 
-手动测试采用贴近生活的测试用例来模仿在日常生活中会遇到的情况，对日常使用场景进行了测试。
+手动测试采用贴近真实用户日常使用场景的测试用例，模拟一般用户的操作方式对 Firefox 在测试环境上的日常浏览体验进行了评估。
 
 # 环境说明
 
@@ -61,15 +61,15 @@ Sipeed LicheePi 4A:
 
 本次测试涵盖的系统版本和 Firefox 版本如下：
 - Fedora 38（仅测试 Pioneer Box）
-- - 软件仓自带 Firefox（手动测试）
+- - 软件仓库自带 Firefox（手动测试）
 - - Nightly 版本（wpt 自动测试）
 - openKylin 2.0
-- - 软件仓自带 Firefox（手动测试）
+- - 软件仓库自带 Firefox（手动测试）
 - - Nightly 版本（wpt 自动测试）
 - RevyOS
-- - 软件仓自带 Firefox（手动测试）
+- - 软件仓库自带 Firefox（手动测试）
 
-其余未测试系统原因如下：
+其余未测试系统及原因如下：
 - openEuler：截止测试时，仅有 CLI 版本
 - openCloudOS：截止测试时，未找到可用版本
 - Ubuntu：截止测试时，未找到可用版本
@@ -83,14 +83,14 @@ Sipeed LicheePi 4A:
 
 #### Sipeed LicheePi 4A
 
-LicheePi 4A 各个系统在 [支持矩阵](https://github.com/ruyisdk/support-matrix/tree/main/LicheePi4A) 上详细记载了如何进行安装，可作为参考。
+LicheePi 4A 各系统在 [支持矩阵](https://github.com/ruyisdk/support-matrix/tree/main/LicheePi4A) 上详细记载了安装过程，可作为参考。
 
 - openKylin
 从 [openKylin 官方](https://www.openkylin.top/downloads/index-cn.html) 下载对应镜像并解压后，使用 fastboot 刷入 emmc。
 
 按住 boot 键后，上电/Reset 进入刷写模式。
 
-uboot 分区镜像需要根据 ram 大小选择版本：
+uboot 分区镜像需要根据 RAM 大小选择版本：
 ```shell!
 tar -xvf openKylin-Embedded-V2.0-Release-licheepi4a-riscv64.tar.xz
 cd openKylin-Embedded-V2.0-Release-licheepi4a-riscv64/
@@ -114,7 +114,7 @@ zstd -d root-lpi4a-20240720_171951.ext4.zst
 
 按住 boot 键后，上电/Reset 进入刷写模式。
 
-接下来刷写系统：
+刷写系统：
 ```shell!
 sudo fastboot devices
 sudo fastboot flash ram u-boot-with-spl-lpi4a.bin 
@@ -128,52 +128,52 @@ sudo fastboot flash root root-lpi4a-20240720_171951.ext4
 #### Milk-V Pioneer Box
 
 - Fedora
-从 [MilkV 官方](https://milkv.io/zh/docs/pioneer/getting-started/download) 给出的下载链接下载并解压后，采用 `dd` 刷入 **SD 卡**
+从 [MilkV 官方](https://milkv.io/zh/docs/pioneer/getting-started/download) 给出的下载链接下载并解压后，使用 `dd` 刷入 **SD 卡**：
 ```shell!
 sudo dd if=path/to/fedora-disk-gnome-workstation.raw of=/dev/sdx bs=1M status=progress
 ```
-将 SD 卡插入 Pioneer Box 后面板的 SD 卡槽中后，启动系统
+将 SD 卡插入 Pioneer Box 后面板的 SD 卡槽中后，启动系统。
 
-下载 [`mv-rootfs.sh`](https://github.com/milkv-pioneer/scripts/blob/main/mv-rootfs.sh) 并以 `sudo` 在 Pioneer Box 上执行该脚本
+下载 [`mv-rootfs.sh`](https://github.com/milkv-pioneer/scripts/blob/main/mv-rootfs.sh) 并以 `sudo` 在 Pioneer Box 上执行该脚本：
 ```shell!
 wget https://github.com/milkv-pioneer/scripts/blob/main/mv-rootfs.sh
 sudo bash ./mv-rootfs.sh
 ```
-按提示选择硬盘，确认和自动在 NVME 硬盘上安装。安装完成后记得移除 SD 卡并重启。
+按提示选择硬盘，确认和自动在 NVMe 硬盘上安装。安装完成后移除 SD 卡并重启。
 
 - openKylin
-下载 [openKylin 2.0](https://mirrors.hust.edu.cn/openkylin-cdimage/2.0/openKylin-Embedded-V2.0-Release-milk-v-pioneer-riscv64.img.xz) 后，使用 `xz` 解压，`dd` 到 **NVME 硬盘**中 *（需要一个硬盘盒）*
+下载 [openKylin 2.0](https://mirrors.hust.edu.cn/openkylin-cdimage/2.0/openKylin-Embedded-V2.0-Release-milk-v-pioneer-riscv64.img.xz) 后，使用 `xz` 解压，`dd` 到 **NVMe 硬盘**中 *（需要一个硬盘盒）*：
 ```shell!
 xz -kd openKylin-Embedded-V2.0-Release-milk-v-pioneer-riscv64.img.xz
 sudo dd if=path/to/openKylin-Embedded-V2.0-Release-milk-v-pioneer-riscv64.img of=/dev/your/nvme bs=4M status=progress
 ```
-将硬盘插入系统后自动启动
+将硬盘插入系统后自动启动。
 
 - RevyOS
-下载 [RevyOS 20241025](https://mirror.iscas.ac.cn/revyos/extra/images/sg2042/20241025/revyos-pioneer-20241025-001347.img.zst) 后，使用 `zstd` 解压，`dd` 到 **NVME 硬盘**中 *（需要一个硬盘盒）*
+下载 [RevyOS 20241025](https://mirror.iscas.ac.cn/revyos/extra/images/sg2042/20241025/revyos-pioneer-20241025-001347.img.zst) 后，使用 `zstd` 解压，`dd` 到 **NVMe 硬盘**中 *（需要一个硬盘盒）*：
 ```shell!
 zstd -d revyos-pioneer-20241025-001347.img.zst
 sudo dd if=path/to/revyos-pioneer-20241025-001347.img of=/dev/your/nvme bs=4M status=progress
 ```
-将硬盘插入系统后自动启动
+将硬盘插入系统后自动启动。
 
 ### 手动测试环境
 
 - Fedora
-采用 `dnf` 进行安装：
+使用 `dnf` 进行安装：
 ```shell!
 sudo dnf update
 sudo dnf install firefox
 ```
 - openKylin
-采用 `apt` 进行安装：
+使用 `apt` 进行安装：
 ```shell!
 sudo apt update
 sudo apt upgrade
 sudo apt install firefox
 ```
 - RevyOS
-采用 `apt` 进行安装：
+使用 `apt` 进行安装：
 ```shell!
 sudo apt update
 sudo apt upgrade
@@ -182,29 +182,29 @@ sudo apt install firefox
 
 ### Firefox 自动测试环境
 
-Firefox 自带的 wpt 自动测试需要构建出 Nightly 环境后进行使用。对此可以参考 [官方文档](https://firefox-source-docs.mozilla.org/setup/linux_build.html)
+Firefox 自带的 wpt 自动测试需要构建出 Nightly 环境后进行使用；可参考 [官方文档](https://firefox-source-docs.mozilla.org/setup/linux_build.html)。
 
-- 安装依赖
+- 安装依赖：
 ```shell!
 sudo dnf install python3 python3-pip
 # apt based:
 # sudo apt-get install curl python3 python3-pip
 ```
 
-- 创建虚拟环境
+- 创建虚拟环境：
 ```shell!
 python -m venv ~/venv_wpt
 source ~/venv_wpt/bin/activate
 ```
 
-- 安装 hg 工具
+- 安装 hg 工具：
 ```shell!
 pip install mercurial
 hg version
 ```
 
-- 初始化 Firefox 源码
-*该步骤会下载超 10G 的源代码，请有一个良好的网络链接*
+- 初始化 Firefox 源码：
+*该步骤会下载超 10G 的源代码，请确保良好的网络连接*
 ```shell!
 curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O
 
@@ -218,27 +218,27 @@ Firefox 依赖于 Rust，需要采用 `rustup.sh` 安装 Rust 工具链：
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-其还需要 clang 和 nodejs，根据环境安装：
+其还依赖 clang 和 nodejs，根据环境安装：
 ```shell!
 sudo dnf install clang clang-devel nodejs
 # sudo apt-get install clang clang-dev nodejs
 ```
 
-该部分由于环境不同，根据 configure 提示使用 apt/pip/cargo 补全依赖即可
+该部分由于环境不同，根据 configure 提示使用 apt/pip/cargo 补全依赖即可：
 ```shell!
 ./mach wpt configure
 ```
-待到提示所有依赖成功安装后，可以进行下一步构建
+待到提示所有依赖成功安装后，可进行下一步构建。
 
 - 构建 Nightly
 使用 `mach` 脚本构建即可：
 ```shell!
 ./mach build
 ```
-该过程可能耗时 2-3h 不等
+该过程可能耗时 2-3h 不等。
 
 - 运行 wpt
-**注意⚠️** 该测试完全运行极其缓慢，可能耗时超过 58 个小时。由于并行测试未知原因无法进行，无法加速测试。
+**注意⚠️** 该测试完全运行极其缓慢，可能耗时超过 58 个小时（单 CPU 核心下）。并行测试由于未知原因无法进行，无法加速测试。
 使用 `mach` 脚本运行 `wpt` 测试：
 ```shell!
 ./mach wpt run --log-raw wpt_out.txt --log-html wpt_out.html --log-mach wpt_out_readable.txt --log-wptreport wpt_out_report.txt --process=8
@@ -250,67 +250,65 @@ sudo dnf install clang clang-devel nodejs
 直接使用 [web-platform-tests](https://web-platform-tests.org/) 中提供的测试。
 
 - 安装环境
-克隆其 git 仓库
+克隆其 git 仓库：
 ```shell!
 git clone https://github.com/web-platform-tests/wpt.git
 cd wpt
 ```
 
-安装 Python 依赖
+安装 Python 依赖：
 ```shell!
 sudo apt-get install python3 python3-pip python3-venv python-is-python3
 # sudo dnf install python3 python3-pip python3-venv python-unversioned-command
 ```
 
 - 配置 hosts
-向 hosts 中添加 wpt 的解析
+向 hosts 中添加 wpt 的解析：
 ```shell!
 ./wpt make-hosts-file | sudo tee -a /etc/hosts
 ```
 
-- 运行测试
+- 运行测试：
 ```shell!
 ./wpt --venv /home/openkylin/venv_wpt/ run --log-raw wpt_out.txt --log-html wpt_out.html --log-mach wpt_out_readable.txt --log-wptreport wpt_out_report.txt firefox -f --process 16
 ```
-其中问到是否安装 geckodriver 时，请选择否（官方无 RISC-V 版本。PLCT 疑似有移植，见 [仓库](https://github.com/plctlab/gecko-dev-riscv)，但是安装不完全影响测试。
+当提示是否安装 geckodriver 时，请选择否（官方无 RISC-V 版本；PLCT 疑似有移植，见 [仓库](https://github.com/plctlab/gecko-dev-riscv)，但安装不完全影响测试。
 
 ### 性能测试
 
-- speedometer 3
+- Speedometer 3
 
-在 firefox 浏览器中访问：https://browserbench.org/Speedometer3.0/
+在 Firefox 浏览器中访问：https://browserbench.org/Speedometer3.0/
 
-- bashmark
+- Basemark
 
-在 firefox 浏览器中访问：https://web.basemark.com
+在 Firefox 浏览器中访问：https://web.basemark.com
 
 # 测试内容
 
 ## 手动测试
 
-手动测试中，根据日常使用精选了 72 个测试用例进行测试，涵盖了浏览网页、下载、书签、打印、设置、历史等对中日常中常见的操作进行了实际使用体验，并形成了截图为结果。
+手动测试中，我们模拟用户日常使用习惯精选了 72 个测试用例进行测试，涵盖了浏览网页、下载、书签、打印、设置、历史等常见操作，并以此基础进行了实际使用体验和步骤截图。
 
 ## web-platform-tests 自动测试
 
-web-platform-tests（wpt）自动测试套件是一个跨浏览器的 Web 平台测试项目。其根据 web 标准实现了一系列的测试用例，来确保浏览器可被认为是与 web 兼容的。
+web-platform-tests（wpt）自动测试套件是一个跨浏览器的 Web 平台测试项目。其根据 Web 标准实现了一系列的测试用例，来确保浏览器可被认为是与 Web 兼容的。
 
-整个测试套件涵盖了浏览器的几乎全部方面，从 dom 节点、css 绘制、cookies、交互这些基础内容，到各个 API、外设使用、浏览器核心等都有涉及，组成了 57640 个测试，总计有超过两百万个实现了的子测试用例。
+整个测试套件涵盖了浏览器的几乎全部方面，从 DOM 节点、CSS 绘制、Cookies、交互等底层内容，到各个 API、外设使用、浏览器核心等均有涉及，组成了 57640 个测试，总计实现了超过两百万个子测试用例，可以认为是浏览器最权威的兼容性测试之一。
 
-这些测试用例对浏览器的方方面面都有覆盖，可以认为是浏览器最权威的兼容性测试之一。
-
-wpt 官方有一个 x86 的测试 [看板](https://wpt.fyi/results/?label=master&label=experimental&aligned)，可以在上面找到单 wpt 的最新结果。
+wpt 官方维护着一个 x86 架构的测试 [看板](https://wpt.fyi/results/?label=master&label=experimental&aligned)，可以在上面找到单 wpt 的最新结果。
 
 由于版权和证书问题，Firefox 自带的 wpt 套件中还包含了其自己转为 wpt 编写的专有用例，以`_mozilla`的路径显示，因此 Firefox 自身的报告测试数量会高于 wpt 官方测试的数目，为正常情况。
 
 ## 性能测试
 
-- speedometer 3
+- Speedometer 3
 
 Speedometer 3 是 Web 浏览器的基准测试，它通过对各种工作负载上的模拟用户交互进行计时来测量 Web 应用程序响应能力。
 
 - Basemark
 
-Basemark Web 3.0 是一个全面的 Web 浏览器性能基准测试，可测试您的移动或桌面系统使用基于 Web 的应用程序的能力。该基准测试包括使用网络建议和功能的各种系统和图形测试。
+Basemark Web 3.0 是一个全面的 Web 浏览器性能基准测试，可测试移动或桌面系统使用基于 Web 的应用程序的能力。该基准测试包括使用网络建议和功能的各种系统和图形测试。
 
 # 测试结果
 
@@ -320,47 +318,42 @@ Basemark Web 3.0 是一个全面的 Web 浏览器性能基准测试，可测试�
 
 手动测试 Firefox 可以正常使用。除解码可能由于没有外设支持导致无法硬解外，其余工作正常。
 
-包括 bing、baidu、CSDN 和知乎等网站均能正常访问，账号功能正常可以登录和同步，书签、历史记录、下载等常用功能运行良好。
+包括 Bing、Baidu、CSDN 和知乎等网站均能正常访问，账号功能正常可以登录和同步，书签、历史记录、下载等常用功能运行良好。
 
 由于只有软解且 CPU 性能不足，视频播放遇到卡顿，在预期之中。
 
-对于在 LicheePi 4A 上的 openkylin 系统上使用 firefox 时会出现稳定性问题，以及无法解码播放在线视频（例如 B 站）。
+在 LicheePi 4A 上的 openKylin 系统上使用 Firefox 时会出现稳定性问题，以及无法解码播放在线视频（例如 Bilibili）。
 
 ## wpt 自动测试
 
-**注意为 Nightly 版本**
-wpt 的结果长势喜人。
+**本节所述 Firefox 均为 Nightly 版本**
 
 - Fedora
-作为 Pioneer Box 官方支持的系统，其兼容性较好。共 61486 个测试，通过 21487 个，跳过 216 个，预期错误 3409 个，已知问题 56 个；216 个失败，183 个错误，31 个预期无法通过的被通过。
+作为 Pioneer Box 官方支持的发行版，其兼容性较好。共 61486 个测试，通过 21487 个，跳过 216 个，预期错误 3409 个，已知问题 56 个；216 个失败，183 个错误，31 个预期无法通过的被通过。其余测试项无法在该平台上运行，或超时。
 
-其余的无法在该平台上运行，或超时。
-
-除 Firefox 在 CSS 上可能的固有差距外，报错大部分集中于 webgpu、webnn、webnfc 这种需要与外设协同工作的。RISC-V 上已经能基本运行，但生态方面仍然有待于加强。
+除 Firefox 在 CSS 上可能的固有差距外，报错大部分集中于 webgpu、webnn、webnfc 等需要与外设协同工作的组件。
 
 - openKylin
 
-其有一定兼容性，但和 Fedora 相比有一定差距。共 61486 个测试，通过 19663 个，跳过 479 个，预期错误 3414 个，已知问题 62 个；2036 个失败，142 个错误，32 个预期无法通过的被通过。
+其有一定兼容性，但和 Fedora 相比有一定差距。共 61486 个测试，通过 19663 个，跳过 479 个，预期错误 3414 个，已知问题 62 个；2036 个失败，142 个错误，32 个预期无法通过的被通过。其余测试项无法在该平台上运行，或超时。
 
-其余的无法在该平台上运行，或超时。
+除上述 Fedora 上出现的问题外，openKylin 上在 HTML Canvas、DOM 绘制、渲染方面也出现了一些问题。这可能与系统外设驱动、渲染驱动不同，或字体渲染错误等原因造成。
 
-除了上述 Fedora 上出现的问题外，openKylin 上在 html canvas、dom 绘制、渲染方面也出现了一些问题。这可能是与系统外设驱动、渲染驱动不同导致的差异，也有部分是由于字体渲染等原因造成的可能。
-
-根据测试截图，差异一般较为细微，如绘图偏移、加粗、字体排版差异等。一般不影响使用。
+根据测试截图，差异一般较为细微，如绘图偏移、加粗、字体排版差异等，我们认为一般不影响日常使用。
 
 ## 性能测试
 
-- speedometer 3
+- Speedometer 3
 
-Pioneer Box 得分为 `0.747` 分，LicheePi 4A 得分为 `0.3249`分，作为参考，现代 x86 计算机得分为 10-20 分。
+Pioneer Box 得分为 `0.747` 分，LicheePi 4A 得分为 `0.3249`分。作为参考，现代 x86 计算机得分一般为 10-20 分。
 
-- bashmark
+- Basemark
 
-Pioneer Box 最终得分为 `39.02` 分，在配备了高性能独显的现代 x86 计算机上的的得分为 2000 分左右。
+Pioneer Box 最终得分为 `39.02` 分。作为参考，配备了高性能独立显卡（AMD RX 6600）的现代 x86 计算机的得分为 2000 分左右。
 
-LicheePi 4A 因为不支持测试所需图形渲染运行异常。
+LicheePi 4A 不支持测试所需图形渲染。
 
-Pioneer Box 在 Basemark Web 测试兼容性数据：
+Pioneer Box 的 Basemark Web 测试兼容性数据：
 - - CSS Capabilities ：59.18%
 - - HTML5 Capabilities ：91.35%
 - - Page Load and Responsiveness Capabilities ：91.59%
@@ -368,7 +361,7 @@ Pioneer Box 在 Basemark Web 测试兼容性数据：
 
 # 总结
 
-综上所述，我们总共进行了多项手动和自动测试，截止到 2024 年 11 月，firefox 在 pioneer box 和 lichee pi 上运行较为良好。受限于 SG2042 和 TH1520 的单核性能并不能做到非常流畅的运行。也有诸如无法使用硬件解码播放视频等问题。总之，firefox 在 RISC-V 平台上的支持仍然任重而道远。
+综上所述，我们针对 Firefox 在 RISC-V 平台上的可用性进行了多项手动和自动测试。截止到 2024 年 11 月，Firefox 在 Milk-V Pioneer Box 和 Sipeed Lichee Pi 4A 上运行较为良好。受限于 SG2042 和 TH1520 的单核性能，并不能做到非常流畅的运行。也有诸如无法使用硬件解码播放视频等问题。Firefox 在 RISC-V 平台上的支持仍然任重而道远。
 
 
 \end{markdown}
