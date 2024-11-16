@@ -10,7 +10,7 @@
 
 %%------------------摘要-------------%%
 \begin{abstract}
-本次测试报告皆在验证 Firefox 在 RISC-V 平台上的可用性，进行了 Firefox 在 Milk-V Pioneer Box 和 Sipeed LicheePi 4A 两个 RISC-V 典型平台上的测试。
+本次测试报告旨在验证 Firefox 在 RISC-V 平台上的可用性，进行了 Firefox 在 Milk-V Pioneer Box 和 Sipeed LicheePi 4A 两个 RISC-V 典型平台上的测试。
 测试涵盖了多个 Linux 发行版和 Firefox 版本，通过手动和自动测试评估其在 RISC-V 平台上的可用性。
 手动测试验证了日常使用场景，自动测试利用 web-platform-tests 对 Firefox 进行了全面的兼容性检验。
 结果显示，Firefox 能够在测试涉及的 RISC-V 设备上运行，但由于硬件性能和软件优化受限，存在无法使用硬件解码播放视频等问题。
@@ -75,7 +75,7 @@ Firefox 是一个免费和开源的浏览器，全世界 10% 的人使用 Firefo
 
 | Pioneer Box | LicheePi 4A | x86-64 参考 |
 | --- | --- | --- |
-| 0.747 | 0.3249 | 1020 |
+| 0.747 | 0.3249 | 10-20 |
 
 - Basemark：
 
@@ -128,7 +128,7 @@ Sipeed LicheePi 4A:
 LicheePi 4A 各系统在 [支持矩阵](https://github.com/ruyisdk/support-matrix/tree/main/LicheePi4A) 上详细记载了安装过程，可作为参考。
 
 - openKylin
-从 [openKylin 官方](https://www.openkylin.top/downloads/index-cn.html) 下载对应镜像并解压后，使用 fastboot 刷入 emmc。
+从 [openKylin 官方](https://www.openkylin.top/downloads/index-cn.html) 下载对应镜像并解压后，使用 fastboot 刷入 eMMC。
 
 按住 boot 键后，上电/Reset 进入刷写模式。
 
@@ -403,7 +403,7 @@ Pioneer Box 的 Basemark Web 测试兼容性数据：
 
 # 总结
 
-综上所述，针对 Firefox 在 RISC-V 平台上的可用性进行了多项手动和自动测试。截止到 2024 年 11 月，Firefox 在 Milk-V Pioneer Box 和 Sipeed Lichee Pi 4A 上运行较为良好。受限于 SG2042 和 TH1520 的单核性能，并不能做到非常流畅的运行。也有诸如无法使用硬件解码播放视频等问题。Firefox 在 RISC-V 平台上的支持仍然任重而道远。
+综上所述，针对 Firefox 在 RISC-V 平台上的可用性进行了多项手动和自动测试。截止到 2024 年 11 月，Firefox 在 Milk-V Pioneer Box 和 Sipeed Lichee Pi 4A 上运行较为良好。受限于 SG2042 和 TH1520 的单核性能，并不能做到非常流畅的运行，也存在诸如无法使用硬件解码播放视频等问题。Firefox 在 RISC-V 平台上的支持仍然任重而道远。
 
 
 \end{markdown}
